@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/p2tdsi/projet.git', branch: 'master'
+                git url: 'https://github.com/p2tdsi/projet-.git', branch: 'master', credentialsId: 'github-token'
             }
         }
         stage('Build Docker Image') {
