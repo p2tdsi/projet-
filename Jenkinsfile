@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE_TAG = 'latest'
     }
 
-
+    stages {
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .'
@@ -26,4 +26,5 @@ pipeline {
         }
     }
 }
+
 
