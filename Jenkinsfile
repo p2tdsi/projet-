@@ -7,10 +7,17 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
+            agent {
+                docker {
+                    image 'docker:26.1'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
                 sh 'docker build -t crud-app:latest .'
             }
         }
+        
         stage('Deploy') {
             steps {
                 sh 'docker stop crud-app || true'
