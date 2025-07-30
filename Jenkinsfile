@@ -1,15 +1,43 @@
 pipeline {
     agent any
-        stages {
-        stage('Clone repo') {
+
+    stages {
+        // Nettoyage du workspace pour éviter les erreurs liées au répertoire
+        stage('Clean Workspace') {
             steps {
-                git branch: 'master', url: 'https://github.com/p2tdsi/projet-.git'
+                cleanWs()
             }
         }
-        stage('List files') {
+
+        // Clonage du dépôt Git avec gestion des identifiants
+        stage('Checkout') {
             steps {
-                sh 'ls -l'
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/master']],
+                          userRemoteConfigs: [[
+                              url: 'https://github.com/p2tdsi/projet-.git',
+                              credentialsId: 'github-token'
+                          ]]])
             }
+        }
+
+        // Déploiement du conteneur Docker avec l'image existante
+        stage('Deploy') {
+            steps {
+                sh 'docker stop crud-app || true'
+                sh 'docker rm crud-app || true'
+                sh 'docker run -d --name crud-app -p 8081:80 -v /var/www/html/database.sqlite:/var/www/html/database.sqlite crud-app:latest'
+            }
+        }
+    }
+
+    // Gestion des résultats
+    post {
+        success {
+            echo 'Pipeline terminé avec succès !'
+        }
+        failure {
+            echo 'Échec du pipeline. Vérifiez les logs.'
         }
     }
 }
