@@ -1,7 +1,7 @@
 pipeline {
     agent any
-    stages {
-        stage('Checkout') {
+        stages {
+        stage('Clone repo') {
             steps {
                 git branch: 'master', url: 'https://github.com/p2tdsi/projet-.git'
             }
