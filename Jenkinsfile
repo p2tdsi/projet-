@@ -6,12 +6,6 @@ pipeline {
         DOCKER_IMAGE_TAG = 'latest'
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/p2tdsi/projet-.git', branch: 'master', credentialsId: 'github-token'
-            }
-        }
 
         stage('Build Docker Image') {
             steps {
