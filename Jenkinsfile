@@ -7,6 +7,13 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/p2tdsi/projet-.git', branch: 'master', credentialsId: 'github-token'
+            }
+        }
+
+    stages {
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .'
